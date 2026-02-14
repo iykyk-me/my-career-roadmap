@@ -19,6 +19,47 @@
   }
 }
 
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+}
+
+/* Print Styles */
+@media print {
+  @page {
+    margin: 20mm;
+  }
+  
+  body {
+    background: white !important;
+    color: black !important;
+  }
+
+  /* Hide navigation elements */
+  nav, header, aside, .no-print {
+    display: none !important;
+  }
+
+  /* Reset layout for print */
+  main {
+    margin: 0 !important;
+    padding: 0 !important;
+    height: auto !important;
+    overflow: visible !important;
+  }
+
+  /* Fix absolute positioning often used in sidebar layouts */
+  .fixed, .sticky {
+    position: static !important;
+  }
+  
+  /* Improve typography for print */
+  .prose {
+    font-size: 12pt;
+  }
+}
+
 body {
   background: var(--background);
   color: var(--foreground);
