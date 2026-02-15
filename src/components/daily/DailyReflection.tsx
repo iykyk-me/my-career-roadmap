@@ -48,7 +48,7 @@ export default function DailyReflection({ initialReflection, initialMood, initia
             <div className="space-y-6">
                 <div>
                     <label className="block text-sm font-medium mb-2 text-slate-700 dark:text-slate-300">오늘의 기분</label>
-                    <div className="flex gap-2">
+                    <div className="grid grid-cols-5 gap-1">
                         {moods.map((m) => {
                             const Icon = m.icon;
                             const isSelected = mood === m.value;
@@ -56,7 +56,7 @@ export default function DailyReflection({ initialReflection, initialMood, initia
                                 <button
                                     key={m.value}
                                     onClick={() => setMood(m.value as any)}
-                                    className={`flex-1 p-3 rounded-xl flex flex-col items-center gap-1 transition-all ${isSelected
+                                    className={`p-2 rounded-xl flex flex-col items-center gap-1 transition-all ${isSelected
                                         ? `${m.color} ring-2 ring-offset-1 ring-primary dark:ring-offset-slate-900`
                                         : 'bg-slate-50 text-slate-400 dark:bg-slate-800 hover:bg-slate-100'
                                         }`}

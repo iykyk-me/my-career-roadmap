@@ -38,14 +38,17 @@
   @page {
     margin: 20mm;
   }
-  
+
   body {
     background: white !important;
     color: black !important;
   }
 
   /* Hide navigation elements */
-  nav, header, aside, .no-print {
+  nav,
+  header,
+  aside,
+  .no-print {
     display: none !important;
   }
 
@@ -58,10 +61,11 @@
   }
 
   /* Fix absolute positioning often used in sidebar layouts */
-  .fixed, .sticky {
+  .fixed,
+  .sticky {
     position: static !important;
   }
-  
+
   /* Improve typography for print */
   .prose {
     font-size: 12pt;
