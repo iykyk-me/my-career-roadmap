@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useMemo } from "react";
 import { supabase } from "@/lib/supabase";
 import { useAuth } from "@/components/auth/AuthProvider";
 import { Database } from "@/lib/database.types";
@@ -120,7 +120,7 @@ export function useSupabaseProfile() {
         }
     };
 
-    const userProfile: UserProfile | null = profile ? {
+    const userProfile: UserProfile | null = useMemo(() => profile ? {
         role: profile.role,
         name: profile.name,
         school: profile.school || "",
@@ -131,7 +131,7 @@ export function useSupabaseProfile() {
         skills: profile.skills || [],
         introduction: profile.introduction || "",
         profileImage: profile.profile_image || undefined
-    } : null;
+    } : null, [profile]);
 
     return { profile: userProfile, updateProfile, uploadProfileImage, loading };
 }
