@@ -94,6 +94,7 @@ export function useSupabaseProfile() {
     };
 
     const userProfile: UserProfile | null = profile ? {
+        role: profile.role,
         name: profile.name,
         school: profile.school || "",
         department: profile.department || "",

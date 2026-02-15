@@ -44,8 +44,11 @@ export default function LoginPage() {
             if (error) throw error;
 
             if (data.user) {
-                // Determine redirect based on role (fetched in AuthProvider, but we can simplisticly redirect to dashboard)
-                router.push("/");
+                if (userType === 'admin') {
+                    router.push("/admin");
+                } else {
+                    router.push("/dashboard");
+                }
             }
         } catch (err: any) {
             console.error("Login failed:", err);

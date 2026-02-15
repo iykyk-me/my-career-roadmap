@@ -6,7 +6,7 @@ import { LayoutDashboard, Map, CheckSquare, Briefcase, User } from "lucide-react
 import { cn } from "@/lib/utils";
 
 const navigation = [
-    { name: "홈", href: "/", icon: LayoutDashboard },
+    { name: "홈", href: "/dashboard", icon: LayoutDashboard },
     { name: "로드맵", href: "/roadmap", icon: Map },
     { name: "목표", href: "/daily", icon: CheckSquare },
     { name: "포트폴리오", href: "/portfolio", icon: Briefcase },

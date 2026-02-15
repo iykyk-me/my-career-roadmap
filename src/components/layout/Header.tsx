@@ -1,7 +1,8 @@
 "use client";
 
-import { Moon, Sun, Flame } from "lucide-react";
+import { Moon, Sun, Flame, Home } from "lucide-react";
 import { useEffect, useState } from "react";
+import Link from "next/link";
 
 export default function Header() {
     const [darkMode, setDarkMode] = useState(false);
@@ -38,6 +39,10 @@ export default function Header() {
             </div>
 
             <div className="flex items-center gap-4">
+                <Link href="/dashboard" className="p-2 text-slate-500 hover:bg-slate-100 rounded-full dark:text-slate-400 dark:hover:bg-slate-800 transition-colors" aria-label="Go to Dashboard">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" /><polyline points="9 22 9 12 15 12 15 22" /></svg>
+                </Link>
+
                 <div className="hidden md:flex items-center gap-2 px-3 py-1.5 bg-point/10 text-point rounded-full dark:bg-orange-900/20 dark:text-orange-400">
                     <Flame className="w-4 h-4" />
                     <span className="text-xs font-bold">3일 연속 달성!</span>

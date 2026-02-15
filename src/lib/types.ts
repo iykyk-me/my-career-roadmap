@@ -2,6 +2,7 @@
 export type Category = 'study' | 'certificate' | 'project' | 'activity' | 'job-prep' | 'award' | 'experience';
 
 export interface UserProfile {
+    role: 'student' | 'admin';
     name: string;
     school: string;
     department: string;

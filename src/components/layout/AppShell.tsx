@@ -13,16 +13,16 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
     const { user, loading } = useAuth();
 
     // Public routes that don't need auth
-    const isPublicRoute = pathname === "/login";
+    const isPublicRoute = pathname === "/login" || pathname === "/";
 
     useEffect(() => {
         if (!loading && !user && !isPublicRoute) {
             router.push("/login");
         }
-        if (!loading && user && isPublicRoute) {
-            router.push("/");
+        if (!loading && user && pathname === "/login") {
+            router.push("/dashboard");
         }
-    }, [user, loading, isPublicRoute, router]);
+    }, [user, loading, isPublicRoute, router, pathname]);
 
     if (loading) {
         return (
