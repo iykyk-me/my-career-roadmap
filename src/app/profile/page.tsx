@@ -7,7 +7,7 @@ import { User, Mail, School, Book, Award, Download, Upload, Save, X, Plus } from
 import { UserProfile } from "@/lib/types";
 
 export default function ProfilePage() {
-    const { profile, loading: profileLoading, updateProfile } = useSupabaseProfile();
+    const { profile, loading: profileLoading, updateProfile, uploadProfileImage } = useSupabaseProfile();
     const { milestones } = useSupabaseMilestones();
     const { dailyGoals } = useSupabaseDailyGoals();
     const { portfolio } = useSupabasePortfolio();
@@ -125,11 +125,29 @@ export default function ProfilePage() {
                         animate={{ opacity: 1, y: 0 }}
                         className="bg-white dark:bg-slate-900 rounded-xl shadow-sm border border-slate-200 dark:border-slate-800 p-6 flex flex-col items-center text-center"
                     >
-                        <div className="w-32 h-32 rounded-full bg-slate-100 dark:bg-slate-800 mb-4 overflow-hidden border-4 border-white dark:border-slate-700 shadow-lg">
-                            {/* Placeholder for now */}
-                            <div className="w-full h-full flex items-center justify-center text-slate-300 dark:text-slate-600">
-                                <User className="w-16 h-16" />
-                            </div>
+                        <div className="relative w-32 h-32 rounded-full bg-slate-100 dark:bg-slate-800 mb-4 overflow-hidden border-4 border-white dark:border-slate-700 shadow-lg group">
+                            {profile.profileImage ? (
+                                <img src={profile.profileImage} alt="Profile" className="w-full h-full object-cover" />
+                            ) : (
+                                <div className="w-full h-full flex items-center justify-center text-slate-300 dark:text-slate-600">
+                                    <User className="w-16 h-16" />
+                                </div>
+                            )}
+                            <label className="absolute inset-0 flex items-center justify-center bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer text-white">
+                                <Upload className="w-8 h-8" />
+                                <input
+                                    type="file"
+                                    className="hidden"
+                                    accept="image/*"
+                                    onChange={(e) => {
+                                        if (e.target.files?.[0]) {
+                                            if (confirm("프로필 이미지를 변경하시겠습니까?")) {
+                                                uploadProfileImage(e.target.files[0]);
+                                            }
+                                        }
+                                    }}
+                                />
+                            </label>
                         </div>
                         <h3 className="text-xl font-bold text-neutral dark:text-slate-100">{profile.name}</h3>
                         <p className="text-slate-500 dark:text-slate-400 text-sm mb-4">{profile.targetJob}</p>

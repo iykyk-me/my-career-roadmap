@@ -72,7 +72,7 @@ export function useSupabaseProfile() {
                 target_company: updates.targetCompany,
                 skills: updates.skills,
                 introduction: updates.introduction,
-                // profile_image handled separately usually
+                profile_image: updates.profileImage,
             };
 
             const { error } = await supabase
@@ -93,6 +93,33 @@ export function useSupabaseProfile() {
         }
     };
 
+    const uploadProfileImage = async (file: File) => {
+        if (!session?.user) return;
+        setLoading(true);
+        try {
+            const fileExt = file.name.split('.').pop();
+            const fileName = `${session.user.id}-${Math.random()}.${fileExt}`;
+            const filePath = `${fileName}`;
+
+            const { error: uploadError } = await supabase.storage
+                .from('avatars')
+                .upload(filePath, file);
+
+            if (uploadError) throw uploadError;
+
+            const { data: { publicUrl } } = supabase.storage
+                .from('avatars')
+                .getPublicUrl(filePath);
+
+            await updateProfile({ profileImage: publicUrl });
+        } catch (e) {
+            console.error(e);
+            alert("이미지 업로드 실패");
+        } finally {
+            setLoading(false);
+        }
+    };
+
     const userProfile: UserProfile | null = profile ? {
         role: profile.role,
         name: profile.name,
@@ -106,7 +133,7 @@ export function useSupabaseProfile() {
         profileImage: profile.profile_image || undefined
     } : null;
 
-    return { profile: userProfile, updateProfile, loading };
+    return { profile: userProfile, updateProfile, uploadProfileImage, loading };
 }
 
 export function useSupabaseMilestones() {
