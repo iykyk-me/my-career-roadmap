@@ -4,6 +4,8 @@ import { useAdminStudents } from "@/hooks/useSupabase";
 import { useState } from "react";
 import { User, Search, ChevronRight } from "lucide-react";
 import Link from "next/link";
+import { motion } from "framer-motion";
+import LoadingSpinner from "@/components/common/LoadingSpinner";
 
 export default function AdminPage() {
     const { students, loading } = useAdminStudents();
@@ -15,10 +17,14 @@ export default function AdminPage() {
         s.department?.includes(searchTerm)
     );
 
-    if (loading) return <div className="p-20 text-center">로딩 중...</div>;
+    if (loading) return <LoadingSpinner />;
 
     return (
-        <div className="max-w-7xl mx-auto">
+        <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="max-w-7xl mx-auto"
+        >
             <div className="mb-8">
                 <h2 className="text-2xl font-bold text-neutral dark:text-slate-100">학생 관리</h2>
                 <p className="text-slate-500 dark:text-slate-400">등록된 학생 목록을 조회하고 관리합니다.</p>
@@ -96,6 +102,6 @@ export default function AdminPage() {
                     </tbody>
                 </table>
             </div>
-        </div>
+        </motion.div>
     );
 }

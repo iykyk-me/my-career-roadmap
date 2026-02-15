@@ -37,11 +37,14 @@
 @media print {
   @page {
     margin: 20mm;
+    size: A4;
   }
 
   body {
     background: white !important;
     color: black !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
   }
 
   /* Hide navigation elements */
@@ -58,6 +61,25 @@
     padding: 0 !important;
     height: auto !important;
     overflow: visible !important;
+    max-width: none !important;
+  }
+
+  /* Ensure Grid/Flex works but respects pages */
+  .grid {
+    display: grid !important;
+    grid-template-columns: repeat(2, 1fr) !important;
+    /* Force 2 cols for compact print */
+    gap: 1.5rem !important;
+  }
+
+  /* Card specific adjustments */
+  .group {
+    break-inside: avoid !important;
+    box-shadow: none !important;
+    border: 1px solid #e2e8f0 !important;
+    /* slate-200 */
+    transform: none !important;
+    /* Disable hover lifts */
   }
 
   /* Fix absolute positioning often used in sidebar layouts */
@@ -68,7 +90,7 @@
 
   /* Improve typography for print */
   .prose {
-    font-size: 12pt;
+    font-size: 11pt;
   }
 }
 

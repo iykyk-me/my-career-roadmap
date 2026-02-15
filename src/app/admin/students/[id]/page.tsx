@@ -7,6 +7,8 @@ import { supabase } from "@/lib/supabase";
 import { ArrowLeft, User, Calendar, MessageSquare, Plus, Save, Clock } from "lucide-react";
 import Link from "next/link";
 import { format } from "date-fns";
+import { motion } from "framer-motion";
+import LoadingSpinner from "@/components/common/LoadingSpinner";
 
 export default function StudentDetailPage() {
     const params = useParams();
@@ -42,11 +44,15 @@ export default function StudentDetailPage() {
         alert("상담 일지가 등록되었습니다.");
     };
 
-    if (loadingStudent || logsLoading) return <div className="p-20 text-center">로딩 중...</div>;
+    if (loadingStudent || logsLoading) return <LoadingSpinner />;
     if (!student) return <div className="p-20 text-center">학생을 찾을 수 없습니다.</div>;
 
     return (
-        <div className="max-w-5xl mx-auto pb-20">
+        <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="max-w-5xl mx-auto pb-20"
+        >
             <Link href="/admin" className="inline-flex items-center text-slate-500 hover:text-slate-900 mb-6">
                 <ArrowLeft className="w-4 h-4 mr-2" />
                 목록으로 돌아가기
@@ -109,8 +115,8 @@ export default function StudentDetailPage() {
                                         key={type}
                                         onClick={() => setLogType(type)}
                                         className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${logType === type
-                                                ? 'bg-primary text-white'
-                                                : 'bg-slate-100 text-slate-600 hover:bg-slate-200 dark:bg-slate-800 dark:text-slate-400'
+                                            ? 'bg-primary text-white'
+                                            : 'bg-slate-100 text-slate-600 hover:bg-slate-200 dark:bg-slate-800 dark:text-slate-400'
                                             }`}
                                     >
                                         {type === 'regular' ? '정기상담' : type === 'career' ? '진로지도' : '위기상담'}
@@ -145,8 +151,8 @@ export default function StudentDetailPage() {
                                     <div className="flex justify-between items-start mb-2">
                                         <div className="flex items-center gap-2">
                                             <span className={`px-2 py-0.5 rounded text-xs font-bold ${log.type === 'crisis' ? 'bg-red-100 text-red-700' :
-                                                    log.type === 'career' ? 'bg-blue-100 text-blue-700' :
-                                                        'bg-green-100 text-green-700'
+                                                log.type === 'career' ? 'bg-blue-100 text-blue-700' :
+                                                    'bg-green-100 text-green-700'
                                                 }`}>
                                                 {log.type === 'regular' ? '정기상담' : log.type === 'career' ? '진로지도' : '위기상담'}
                                             </span>
@@ -167,6 +173,6 @@ export default function StudentDetailPage() {
                     </div>
                 </div>
             </div>
-        </div>
+        </motion.div>
     );
 }
