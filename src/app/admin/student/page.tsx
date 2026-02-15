@@ -1,7 +1,7 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { useParams, useRouter } from "next/navigation";
+import { useState, useEffect, Suspense } from "react";
+import { useSearchParams, useRouter } from "next/navigation";
 import { useCounselingLogs } from "@/hooks/useSupabase";
 import { supabase } from "@/lib/supabase";
 import { ArrowLeft, User, Calendar, MessageSquare, Plus, Save, Clock } from "lucide-react";
@@ -10,16 +10,17 @@ import { format } from "date-fns";
 import { motion } from "framer-motion";
 import LoadingSpinner from "@/components/common/LoadingSpinner";
 
-export default function StudentDetailPage() {
-    const params = useParams();
-    const id = params.id as string;
+function StudentDetailContent() {
+    const searchParams = useSearchParams();
+    const id = searchParams.get('id');
     const router = useRouter();
 
     const [student, setStudent] = useState<any>(null);
     const [loadingStudent, setLoadingStudent] = useState(true);
 
     // Counseling Logs
-    const { logs, loading: logsLoading, addLog } = useCounselingLogs(id);
+    // We need to handle id being null initially or optionally
+    const { logs, loading: logsLoading, addLog } = useCounselingLogs(id || "");
     const [newLogContent, setNewLogContent] = useState("");
     const [logType, setLogType] = useState<'regular' | 'career' | 'crisis'>('regular');
 
@@ -34,7 +35,7 @@ export default function StudentDetailPage() {
     }, [id]);
 
     const handleAddLog = async () => {
-        if (!newLogContent.trim()) return;
+        if (!newLogContent.trim() || !id) return;
         await addLog({
             student_id: id,
             content: newLogContent,
@@ -44,6 +45,7 @@ export default function StudentDetailPage() {
         alert("상담 일지가 등록되었습니다.");
     };
 
+    if (!id) return <div className="p-20 text-center">잘못된 접근입니다.</div>;
     if (loadingStudent || logsLoading) return <LoadingSpinner />;
     if (!student) return <div className="p-20 text-center">학생을 찾을 수 없습니다.</div>;
 
@@ -174,5 +176,13 @@ export default function StudentDetailPage() {
                 </div>
             </div>
         </motion.div>
+    );
+}
+
+export default function StudentDetailPage() {
+    return (
+        <Suspense fallback={<LoadingSpinner />}>
+            <StudentDetailContent />
+        </Suspense>
     );
 }

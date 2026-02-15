@@ -86,7 +86,7 @@ export default function AdminPage() {
                                         </span>
                                     </td>
                                     <td className="p-4 text-right">
-                                        <Link href={`/admin/students/${student.id}`} className="text-slate-400 hover:text-primary transition-colors inline-block p-2">
+                                        <Link href={`/admin/student?id=${student.id}`} className="text-slate-400 hover:text-primary transition-colors inline-block p-2">
                                             <ChevronRight className="w-5 h-5" />
                                         </Link>
                                     </td>
