@@ -36,7 +36,7 @@ export default function Sidebar() {
     };
 
     return (
-        <div className="hidden lg:flex lg:flex-col lg:w-64 lg:fixed lg:inset-y-0 lg:left-0 lg:z-50 lg:border-r lg:bg-white dark:lg:bg-slate-900 lg:border-slate-200 dark:lg:border-slate-800">
+        <div className="hidden lg:flex lg:flex-col lg:w-64 lg:fixed lg:inset-y-0 lg:left-0 lg:z-[100] lg:border-r lg:bg-white dark:lg:bg-slate-900 lg:border-slate-200 dark:lg:border-slate-800">
             {/* Header */}
             <div className="flex items-center justify-center h-16 border-b border-slate-200 dark:border-slate-800">
                 <Link href="/dashboard">
