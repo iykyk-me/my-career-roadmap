@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { useProfile, usePortfolio } from "@/hooks/useLocalStorage";
+import { useSupabaseProfile, useSupabasePortfolio } from "@/hooks/useSupabase";
 import ProjectCard from "@/components/portfolio/ProjectCard";
 import PortfolioForm from "@/components/portfolio/PortfolioForm";
 import PortfolioDetail from "@/components/portfolio/PortfolioDetail";
@@ -20,8 +20,8 @@ const filters = [
 ];
 
 export default function PortfolioPage() {
-    const { data: portfolio, setData: setPortfolio } = usePortfolio();
-    const { data: profile } = useProfile();
+    const { portfolio, loading: portfolioLoading, addPortfolio, updatePortfolio, deletePortfolio } = useSupabasePortfolio();
+    const { profile, loading: profileLoading } = useSupabaseProfile();
 
     const [filter, setFilter] = useState('all');
     const [isFormOpen, setIsFormOpen] = useState(false);
@@ -39,18 +39,18 @@ export default function PortfolioPage() {
         new Date(b.date).getTime() - new Date(a.date).getTime()
     );
 
-    const handleCreate = (data: Omit<PortfolioItem, "id">) => {
+    const handleCreate = async (data: Omit<PortfolioItem, "id">) => {
         const newItem: PortfolioItem = {
             ...data,
             id: crypto.randomUUID(),
         };
-        setPortfolio([...portfolio, newItem]);
+        await addPortfolio(newItem);
         setIsFormOpen(false);
     };
 
-    const handleUpdate = (data: Omit<PortfolioItem, "id">) => {
+    const handleUpdate = async (data: Omit<PortfolioItem, "id">) => {
         if (!editingItem) return;
-        setPortfolio(portfolio.map(item => item.id === editingItem.id ? { ...item, ...data } : item));
+        await updatePortfolio(editingItem.id, data);
         setIsFormOpen(false);
         setEditingItem(null);
 
@@ -60,9 +60,9 @@ export default function PortfolioPage() {
         }
     };
 
-    const handleDelete = (id: string) => {
+    const handleDelete = async (id: string) => {
         if (confirm("정말 삭제하시겠습니까?")) {
-            setPortfolio(portfolio.filter(item => item.id !== id));
+            await deletePortfolio(id);
             setIsDetailOpen(false);
             setSelectedItem(null);
         }
@@ -86,6 +86,9 @@ export default function PortfolioPage() {
     const handlePrint = () => {
         window.print();
     };
+
+    if (portfolioLoading || profileLoading) return <div className="p-20 text-center">로딩 중...</div>;
+    if (!profile) return null;
 
     return (
         <div className="max-w-6xl mx-auto pb-20">
@@ -125,8 +128,8 @@ export default function PortfolioPage() {
                         key={f.id}
                         onClick={() => setFilter(f.id)}
                         className={`px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap transition-colors ${filter === f.id
-                                ? 'bg-slate-900 text-white dark:bg-white dark:text-slate-900'
-                                : 'bg-white text-slate-600 border border-slate-200 hover:bg-slate-50 dark:bg-slate-800 dark:border-slate-700 dark:text-slate-400'
+                            ? 'bg-slate-900 text-white dark:bg-white dark:text-slate-900'
+                            : 'bg-white text-slate-600 border border-slate-200 hover:bg-slate-50 dark:bg-slate-800 dark:border-slate-700 dark:text-slate-400'
                             }`}
                     >
                         {f.label}

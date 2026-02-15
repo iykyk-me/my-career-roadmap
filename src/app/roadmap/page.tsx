@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { useMilestones } from "@/hooks/useLocalStorage";
+import { useSupabaseMilestones, useCareerGuides } from "@/hooks/useSupabase";
 import RoadmapTimeline from "@/components/roadmap/RoadmapTimeline";
 import MilestoneForm from "@/components/roadmap/MilestoneForm";
 import Modal from "@/components/common/Modal";
@@ -9,23 +9,11 @@ import { Milestone, Category } from "@/lib/types";
 import { Plus, Filter, Wand2 } from "lucide-react";
 import { motion } from "framer-motion";
 
-const templates = {
-    dev: [
-        { title: "HTML/CSS 기초", description: "웹 표준과 스타일링 기초 학습", category: "study", duration: 30 },
-        { title: "JavaScript 심화", description: "ES6+ 문법 및 비동기 프로그래밍", category: "study", duration: 45 },
-        { title: "React 프로젝트", description: "컴포넌트 기반 웹 앱 개발", category: "project", duration: 60 },
-        { title: "정보처리기능사", description: "필기 및 실기 취득", category: "certificate", duration: 90 },
-    ],
-    design: [
-        { title: "포토샵/일러스트레이터", description: "디자인 툴 숙련도 향상", category: "study", duration: 45 },
-        { title: "UI/UX 기초", description: "사용자 경험 설계 원칙 학습", category: "study", duration: 30 },
-        { title: "GTQ 1급", description: "그래픽기술자격 취득", category: "certificate", duration: 30 },
-        { title: "포트폴리오 제작", description: "비핸스/노션 포트폴리오", category: "project", duration: 60 },
-    ]
-};
 
 export default function RoadmapPage() {
-    const { data: milestones, setData: setMilestones } = useMilestones();
+    const { milestones, loading: milestonesLoading, addMilestone, updateMilestone, deleteMilestone } = useSupabaseMilestones(); // updated hook signature to expose CRUD
+    const { guides, loading: guidesLoading } = useCareerGuides();
+
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [editingMilestone, setEditingMilestone] = useState<Milestone | null>(null);
     const [filterCategory, setFilterCategory] = useState<Category | 'all'>('all');
@@ -34,18 +22,21 @@ export default function RoadmapPage() {
         ? milestones
         : milestones.filter(m => m.category === filterCategory);
 
-    const handleCreate = (data: Omit<Milestone, "id" | "progress" | "order">) => {
+    const handleCreate = async (data: Omit<Milestone, "id" | "progress" | "order">) => {
         const newMilestone: Milestone = {
             ...data,
-            id: crypto.randomUUID(),
+            id: crypto.randomUUID(), // DB will generate ID if omitted, but for optimistic UI or strict typing we might need it. Supabase ignores ID on insert if default, or we can omit. 
+            // My hook expects Milestone object. Let's pass what we have.
+            // Actually my hook addMilestone takes Milestone.
             progress: 0,
             order: milestones.length + 1,
+            tasks: []
         };
-        setMilestones([...milestones, newMilestone]);
+        await addMilestone(newMilestone);
         setIsModalOpen(false);
     };
 
-    const handleUpdate = (data: Omit<Milestone, "id" | "progress" | "order">) => {
+    const handleUpdate = async (data: Omit<Milestone, "id" | "progress" | "order">) => {
         if (!editingMilestone) return;
 
         // Calculate progress
@@ -53,41 +44,34 @@ export default function RoadmapPage() {
         const completedTasks = data.tasks.filter(t => t.completed).length;
         const progress = totalTasks === 0 ? 0 : Math.round((completedTasks / totalTasks) * 100);
 
-        const updatedMilestones = milestones.map(m =>
-            m.id === editingMilestone.id
-                ? { ...m, ...data, progress }
-                : m
-        );
-        setMilestones(updatedMilestones);
+        await updateMilestone(editingMilestone.id, { ...data, progress });
         setIsModalOpen(false);
         setEditingMilestone(null);
     };
 
-    const handleDelete = (id: string) => {
+    const handleDelete = async (id: string) => {
         if (confirm("정말 삭제하시겠습니까? (복구할 수 없습니다)")) {
-            setMilestones(milestones.filter(m => m.id !== id));
+            await deleteMilestone(id);
         }
     };
 
-    const handleToggleTask = (milestoneId: string, taskId: string) => {
-        const updatedMilestones = milestones.map(m => {
-            if (m.id !== milestoneId) return m;
+    const handleToggleTask = async (milestoneId: string, taskId: string) => {
+        const milestone = milestones.find(m => m.id === milestoneId);
+        if (!milestone) return;
 
-            const newTasks = m.tasks.map(t =>
-                t.id === taskId ? { ...t, completed: !t.completed } : t
-            );
+        const newTasks = milestone.tasks.map(t =>
+            t.id === taskId ? { ...t, completed: !t.completed } : t
+        );
 
-            const completedCount = newTasks.filter(t => t.completed).length;
-            const progress = newTasks.length === 0 ? 0 : Math.round((completedCount / newTasks.length) * 100);
+        const completedCount = newTasks.filter(t => t.completed).length;
+        const progress = newTasks.length === 0 ? 0 : Math.round((completedCount / newTasks.length) * 100);
 
-            // Auto-update status based on progress
-            let status = m.status;
-            if (progress === 100) status = 'completed';
-            else if (progress > 0) status = 'in-progress';
+        // Auto-update status based on progress
+        let status = milestone.status;
+        if (progress === 100) status = 'completed';
+        else if (progress > 0) status = 'in-progress';
 
-            return { ...m, tasks: newTasks, progress, status };
-        });
-        setMilestones(updatedMilestones);
+        await updateMilestone(milestoneId, { tasks: newTasks, progress, status });
     };
 
     const openCreateModal = () => {
@@ -104,34 +88,50 @@ export default function RoadmapPage() {
     };
 
     // Simplified Template Loader
-    const loadTemplate = (type: 'dev' | 'design') => {
-        if (!confirm("현재 로드맵에 템플릿 마일스톤이 추가됩니다. 계속하시겠습니까?")) return;
+    // Template Loader from Guides
+    const loadTemplate = async (guideId: string) => {
+        const guide = guides.find(g => g.id === guideId);
+        if (!guide) return;
 
-        const templateItems = templates[type];
+        if (!confirm(`'${guide.title}' 템플릿을 로드하시겠습니까?`)) return;
+
+        const templateItems = typeof guide.roadmap_template === 'string'
+            ? JSON.parse(guide.roadmap_template)
+            : guide.roadmap_template;
+
+        if (!Array.isArray(templateItems)) {
+            alert("템플릿 형식이 올바르지 않습니다.");
+            return;
+        }
+
         const today = new Date();
 
-        const newMilestones = templateItems.map((item, index) => {
+        // Sequential insert to maintain order
+        for (let i = 0; i < templateItems.length; i++) {
+            const item = templateItems[i];
             const start = new Date(today);
-            start.setDate(today.getDate() + (index * 30)); // Stagger by month roughly
+            start.setDate(today.getDate() + (i * 30)); // Rough estimation
             const end = new Date(start);
-            end.setDate(start.getDate() + item.duration);
+            end.setDate(start.getDate() + (item.duration || 30));
 
-            return {
+            const newMilestone: Milestone = {
                 id: crypto.randomUUID(),
                 title: item.title,
                 description: item.description,
                 category: item.category as Category,
                 startDate: start.toISOString().split('T')[0],
                 endDate: end.toISOString().split('T')[0],
-                status: 'not-started' as const,
+                status: 'not-started',
                 progress: 0,
                 tasks: [],
-                order: milestones.length + index + 1
+                order: milestones.length + i + 1
             };
-        });
-
-        setMilestones([...milestones, ...newMilestones]);
+            await addMilestone(newMilestone);
+        }
+        alert("로드맵이 생성되었습니다.");
     };
+
+    if (milestonesLoading) return <div className="p-20 text-center">로딩 중...</div>;
 
     return (
         <div className="max-w-4xl mx-auto pb-20">
@@ -141,13 +141,20 @@ export default function RoadmapPage() {
                     <p className="text-slate-500 dark:text-slate-400">꿈을 향한 여정을 단계별로 계획해보세요.</p>
                 </div>
                 <div className="flex gap-2">
-                    <button
-                        onClick={() => loadTemplate('dev')}
-                        className="flex items-center gap-2 px-4 py-2 bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 rounded-lg hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors text-sm font-medium"
-                    >
-                        <Wand2 className="w-4 h-4" />
-                        템플릿
-                    </button>
+                    {guidesLoading ? (
+                        <span className="text-sm text-slate-400 self-center">가이드 로딩 중...</span>
+                    ) : (
+                        guides.map(guide => (
+                            <button
+                                key={guide.id}
+                                onClick={() => loadTemplate(guide.id)}
+                                className="flex items-center gap-2 px-4 py-2 bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 rounded-lg hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors text-sm font-medium"
+                            >
+                                <Wand2 className="w-4 h-4" />
+                                {guide.job_category}
+                            </button>
+                        ))
+                    )}
                     <button
                         onClick={openCreateModal}
                         className="flex items-center gap-2 px-4 py-2 bg-primary text-white rounded-lg hover:bg-teal-700 transition-colors font-medium shadow-sm shadow-primary/30"

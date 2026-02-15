@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { useDailyGoals } from "@/hooks/useLocalStorage"; // Make sure this hook is robust enough
+import { useSupabaseDailyGoals } from "@/hooks/useSupabase";
 import GoalChecklist from "@/components/daily/GoalChecklist";
 import DailyReflection from "@/components/daily/DailyReflection";
 import CalendarHeatmap from "@/components/daily/CalendarHeatmap";
@@ -12,7 +12,7 @@ import { ChevronLeft, ChevronRight, Calculator } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
 export default function DailyPage() {
-    const { data: dailyGoals, setData: setDailyGoals } = useDailyGoals();
+    const { dailyGoals, loading, updateDailyGoal } = useSupabaseDailyGoals();
     const [selectedDate, setSelectedDate] = useState(format(new Date(), 'yyyy-MM-dd'));
 
     // Helper to find or create daily entry safely (without mutating state directly in render)
@@ -30,12 +30,14 @@ export default function DailyPage() {
     const currentEntry = getDailyEntry(selectedDate);
 
     const updateEntry = (updatedEntry: DailyGoal) => {
-        const exists = dailyGoals.some(g => g.date === selectedDate);
-        if (exists) {
-            setDailyGoals(dailyGoals.map(g => g.date === selectedDate ? updatedEntry : g));
-        } else {
-            setDailyGoals([...dailyGoals, updatedEntry]);
-        }
+        // We only explicitly update. The hook handles upsert.
+        // We pass the fields to updateDailyGoal
+        updateDailyGoal(selectedDate, {
+            goals: updatedEntry.goals,
+            reflection: updatedEntry.reflection,
+            mood: updatedEntry.mood,
+            studyHours: updatedEntry.studyHours
+        });
     };
 
     const handleAddGoal = (text: string, category: Category) => {

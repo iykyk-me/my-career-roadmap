@@ -1,9 +1,8 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google"; // Using Inter for now, can switch to Pretendard if we add custom font loading
 import "./globals.css";
-import Sidebar from "@/components/layout/Sidebar";
-import Header from "@/components/layout/Header";
-import MobileNav from "@/components/layout/MobileNav";
+import { AuthProvider } from "@/components/auth/AuthProvider";
+import AppShell from "@/components/layout/AppShell";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -23,18 +22,11 @@ export default function RootLayout({
   return (
     <html lang="ko" suppressHydrationWarning>
       <body className={`${inter.className} bg-background dark:bg-slate-950 text-foreground dark:text-slate-100`}>
-        <div className="flex h-screen overflow-hidden">
-          <Sidebar />
-          <div className="flex flex-col flex-1 w-full lg:pl-64 h-full relative">
-            <Header />
-            <main className="flex-1 overflow-y-auto p-4 md:p-6 pb-20 lg:pb-6">
-              <div className="max-w-7xl mx-auto">
-                {children}
-              </div>
-            </main>
-            <MobileNav />
-          </div>
-        </div>
+        <AuthProvider>
+          <AppShell>
+            {children}
+          </AppShell>
+        </AuthProvider>
       </body>
     </html>
   );

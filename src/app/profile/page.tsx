@@ -1,19 +1,27 @@
 "use client";
 
-import { useProfile, useMilestones, useDailyGoals, usePortfolio } from "@/hooks/useLocalStorage";
-import { useState, useRef } from "react";
+import { useSupabaseProfile, useSupabaseMilestones, useSupabaseDailyGoals, useSupabasePortfolio } from "@/hooks/useSupabase";
+import { useState, useRef, useEffect } from "react";
 import { motion } from "framer-motion";
 import { User, Mail, School, Book, Award, Download, Upload, Save, X, Plus } from "lucide-react";
 import { UserProfile } from "@/lib/types";
 
 export default function ProfilePage() {
-    const { data: profile, setData: setProfile } = useProfile();
-    const { data: milestones, setData: setMilestones } = useMilestones();
-    const { data: dailyGoals, setData: setDailyGoals } = useDailyGoals();
-    const { data: portfolio, setData: setPortfolio } = usePortfolio();
+    const { profile, loading: profileLoading, updateProfile } = useSupabaseProfile();
+    const { milestones } = useSupabaseMilestones();
+    const { dailyGoals } = useSupabaseDailyGoals();
+    const { portfolio } = useSupabasePortfolio();
+
+    // Hooks need initial data for editForm, but hooks are async.
+    // We need useEffect to set editForm when profile loads.
 
     const [isEditing, setIsEditing] = useState(false);
-    const [editForm, setEditForm] = useState<UserProfile>(profile);
+    const [editForm, setEditForm] = useState<UserProfile | null>(null);
+
+    useEffect(() => {
+        if (profile) setEditForm(profile);
+    }, [profile]);
+
     const [newSkill, setNewSkill] = useState("");
     const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -29,31 +37,44 @@ export default function ProfilePage() {
         }
     };
 
-    const handleSave = () => {
-        setProfile(editForm);
+    const handleSave = async () => {
+        if (!editForm) return;
+        await updateProfile(editForm);
         setIsEditing(false);
         alert("프로필이 저장되었습니다.");
     };
 
     const handleChange = (field: keyof UserProfile, value: any) => {
-        setEditForm(prev => ({ ...prev, [field]: value }));
+        setEditForm(prev => {
+            if (!prev) return null;
+            return { ...prev, [field]: value };
+        });
     };
 
     const addSkill = () => {
+        if (!editForm) return;
         if (newSkill.trim() && !editForm.skills.includes(newSkill.trim())) {
-            setEditForm(prev => ({
-                ...prev,
-                skills: [...prev.skills, newSkill.trim()]
-            }));
+            setEditForm(prev => {
+                if (!prev) return null;
+                const current = prev as UserProfile; // Explicit cast to avoid type inference issues
+                return {
+                    ...current,
+                    skills: [...current.skills, newSkill.trim()]
+                };
+            });
             setNewSkill("");
         }
     };
 
     const removeSkill = (skill: string) => {
-        setEditForm(prev => ({
-            ...prev,
-            skills: prev.skills.filter(s => s !== skill)
-        }));
+        if (!editForm) return;
+        setEditForm(prev => {
+            if (!prev) return null;
+            return {
+                ...prev,
+                skills: prev.skills.filter(s => s !== skill)
+            };
+        });
     };
 
     const handleExport = () => {
@@ -78,36 +99,16 @@ export default function ProfilePage() {
     };
 
     const handleImport = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const file = e.target.files?.[0];
-        if (!file) return;
-
-        const reader = new FileReader();
-        reader.onload = (event) => {
-            try {
-                const json = JSON.parse(event.target?.result as string);
-                if (confirm("현재 데이터를 덮어쓰고 백업 데이터를 불러오시겠습니까? 이 작업은 취소할 수 없습니다.")) {
-                    if (json.profile) setProfile(json.profile);
-                    if (json.milestones) setMilestones(json.milestones);
-                    if (json.dailyGoals) setDailyGoals(json.dailyGoals);
-                    if (json.portfolio) setPortfolio(json.portfolio);
-                    alert("데이터가 성공적으로 복원되었습니다.");
-                    window.location.reload();
-                }
-            } catch (err) {
-                alert("올바르지 않은 백업 파일입니다.");
-                console.error(err);
-            }
-        };
-        reader.readAsText(file);
+        alert("온라인 모드에서는 백업 불러오기가 아직 지원되지 않습니다. 관리자에게 문의하세요.");
     };
 
     const handleReset = () => {
-        if (confirm("모든 데이터를 초기화하시겠습니까? 이 작업은 되돌릴 수 없습니다.")) {
-            localStorage.clear();
-            alert("초기화되었습니다. 페이지를 새로고침합니다.");
-            window.location.reload();
-        }
+        // Not implemented for Supabase yet
+        alert("온라인 모드에서는 초기화 기능이 제한됩니다.");
     };
+
+    if (profileLoading) return <div className="p-20 text-center">로딩 중...</div>;
+    if (!profile || !editForm) return null;
 
     return (
         <div className="max-w-4xl mx-auto pb-20">

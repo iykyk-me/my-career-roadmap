@@ -1,6 +1,6 @@
 "use client";
 
-import { useProfile, useDashboardStats, useMilestones, useDailyGoals } from "@/hooks/useLocalStorage";
+import { useSupabaseProfile, useSupabaseDashboardStats, useSupabaseMilestones, useSupabaseDailyGoals } from "@/hooks/useSupabase";
 import StatCard from "@/components/dashboard/StatCard";
 import ProgressChart from "@/components/dashboard/ProgressChart";
 import ActivityChart from "@/components/dashboard/ActivityChart";
@@ -12,10 +12,19 @@ import { format } from "date-fns";
 import { ko } from "date-fns/locale";
 
 export default function Dashboard() {
-  const { data: profile } = useProfile();
-  const { data: milestones } = useMilestones();
-  const { data: dailyGoals } = useDailyGoals();
-  const stats = useDashboardStats();
+
+  const { profile, loading: profileLoading } = useSupabaseProfile();
+  const { milestones, loading: milestonesLoading } = useSupabaseMilestones();
+  const { dailyGoals, loading: goalsLoading } = useSupabaseDailyGoals();
+  const { stats, loading: statsLoading } = useSupabaseDashboardStats();
+
+  const loading = profileLoading || milestonesLoading || goalsLoading || statsLoading;
+
+  if (loading) {
+    return <div className="p-8 text-center text-slate-500">데이터를 불러오는 중입니다...</div>;
+  }
+
+  if (!profile) return null;
 
   const today = format(new Date(), 'yyyy-MM-dd');
   const todayGoals = dailyGoals.find(dg => dg.date === today)?.goals || [];
