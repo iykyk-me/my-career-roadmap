@@ -43,7 +43,7 @@ export default function DailyReflection({ initialReflection, initialMood, initia
 
     return (
         <div className="bg-white dark:bg-slate-900 rounded-xl shadow-sm border border-slate-200 dark:border-slate-800 p-6 h-full">
-            <h3 className="text-lg font-bold mb-4 text-slate-900 dark:text-slate-100">오늘의 회고</h3>
+            <h3 className="text-lg font-bold mb-4 text-neutral dark:text-slate-100">오늘의 회고</h3>
 
             <div className="space-y-6">
                 <div>
@@ -57,8 +57,8 @@ export default function DailyReflection({ initialReflection, initialMood, initia
                                     key={m.value}
                                     onClick={() => setMood(m.value as any)}
                                     className={`flex-1 p-3 rounded-xl flex flex-col items-center gap-1 transition-all ${isSelected
-                                            ? `${m.color} ring-2 ring-offset-1 ring-blue-500 dark:ring-offset-slate-900`
-                                            : 'bg-slate-50 text-slate-400 dark:bg-slate-800 hover:bg-slate-100'
+                                        ? `${m.color} ring-2 ring-offset-1 ring-primary dark:ring-offset-slate-900`
+                                        : 'bg-slate-50 text-slate-400 dark:bg-slate-800 hover:bg-slate-100'
                                         }`}
                                 >
                                     <Icon className="w-6 h-6" />
@@ -88,13 +88,13 @@ export default function DailyReflection({ initialReflection, initialMood, initia
                         value={reflection}
                         onChange={(e) => setReflection(e.target.value)}
                         placeholder="오늘 무엇을 배웠나요? 어떤 점이 아쉬웠나요?"
-                        className="w-full h-32 px-3 py-2 border rounded-lg resize-none dark:bg-slate-800 dark:border-slate-700 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        className="w-full h-32 px-3 py-2 border rounded-lg resize-none dark:bg-slate-800 dark:border-slate-700 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary"
                     />
                 </div>
 
                 <button
                     onClick={handleSave}
-                    className="w-full py-2 bg-blue-600 text-white rounded-lg font-bold hover:bg-blue-700 transition-colors shadow-sm"
+                    className="w-full py-2 bg-primary text-white rounded-lg font-bold hover:bg-teal-700 transition-colors shadow-sm"
                 >
                     저장하기
                 </button>

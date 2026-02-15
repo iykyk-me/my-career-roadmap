@@ -163,7 +163,7 @@ export default function PortfolioForm({ initialData, onSubmit, onCancel }: Portf
                 </div>
                 <div className="flex flex-wrap gap-2">
                     {tags.map(tag => (
-                        <span key={tag} className="flex items-center gap-1 px-2 py-1 bg-blue-50 text-blue-700 rounded text-xs dark:bg-blue-900/30 dark:text-blue-300">
+                        <span key={tag} className="flex items-center gap-1 px-2 py-1 bg-primary/10 text-primary rounded text-xs dark:bg-blue-900/30 dark:text-blue-300">
                             {tag}
                             <button onClick={() => removeTag(tag)} className="hover:text-blue-900"><X className="w-3 h-3" /></button>
                         </span>
@@ -212,7 +212,7 @@ export default function PortfolioForm({ initialData, onSubmit, onCancel }: Portf
                     <button
                         type="button"
                         onClick={() => fileInputRef.current?.click()}
-                        className="aspect-video flex flex-col items-center justify-center border-2 border-dashed border-slate-300 rounded-lg hover:border-blue-500 hover:bg-blue-50 transition-colors text-slate-400 dark:border-slate-700 dark:hover:bg-slate-800"
+                        className="aspect-video flex flex-col items-center justify-center border-2 border-dashed border-slate-300 rounded-lg hover:border-primary hover:bg-primary/5 transition-colors text-slate-400 dark:border-slate-700 dark:hover:bg-slate-800"
                     >
                         <Upload className="w-6 h-6 mb-1" />
                         <span className="text-xs">업로드</span>
@@ -237,7 +237,7 @@ export default function PortfolioForm({ initialData, onSubmit, onCancel }: Portf
                 </button>
                 <button
                     type="submit"
-                    className="px-4 py-2 bg-blue-600 text-white hover:bg-blue-700 rounded-lg transition-colors font-medium"
+                    className="px-4 py-2 bg-primary text-white hover:bg-teal-700 rounded-lg transition-colors font-medium"
                 >
                     저장하기
                 </button>

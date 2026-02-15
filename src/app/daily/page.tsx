@@ -91,7 +91,7 @@ export default function DailyPage() {
         <div className="max-w-4xl mx-auto pb-20">
             <div className="flex flex-col md:flex-row md:items-center justify-between mb-8 gap-4">
                 <div>
-                    <h2 className="text-2xl font-bold text-slate-900 dark:text-slate-100">일일 목표 관리</h2>
+                    <h2 className="text-2xl font-bold text-neutral dark:text-slate-100">일일 목표 관리</h2>
                     <p className="text-slate-500 dark:text-slate-400">매일의 작은 성공이 모여 큰 꿈을 이룹니다.</p>
                 </div>
 
@@ -115,10 +115,10 @@ export default function DailyPage() {
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
                 <div className="lg:col-span-2 space-y-6">
                     {/* Progress Card */}
-                    <div className="bg-gradient-to-r from-blue-500 to-indigo-600 rounded-xl p-6 text-white shadow-lg relative overflow-hidden">
+                    <div className="bg-gradient-to-r from-primary to-sub rounded-xl p-6 text-white shadow-lg relative overflow-hidden">
                         <div className="relative z-10 flex justify-between items-center">
                             <div>
-                                <p className="text-blue-100 text-sm font-medium mb-1">오늘의 달성률</p>
+                                <p className="text-white/80 text-sm font-medium mb-1">오늘의 달성률</p>
                                 <h3 className="text-3xl font-bold">{progress}%</h3>
                             </div>
                             <div className="w-16 h-16 rounded-full border-4 border-white/30 flex items-center justify-center">

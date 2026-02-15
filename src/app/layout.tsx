@@ -22,7 +22,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ko" suppressHydrationWarning>
-      <body className={`${inter.className} bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100`}>
+      <body className={`${inter.className} bg-background dark:bg-slate-950 text-foreground dark:text-slate-100`}>
         <div className="flex h-screen overflow-hidden">
           <Sidebar />
           <div className="flex flex-col flex-1 w-full lg:pl-64 h-full relative">

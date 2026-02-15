@@ -21,7 +21,7 @@ export default function ProgressChart() {
             transition={{ duration: 0.5, delay: 0.2 }}
             className="bg-white dark:bg-slate-900 p-6 rounded-xl shadow-sm border border-slate-100 dark:border-slate-800"
         >
-            <h3 className="text-lg font-bold mb-6 text-slate-900 dark:text-slate-100">주간 공부 시간</h3>
+            <h3 className="text-lg font-bold mb-6 text-neutral dark:text-slate-100">주간 공부 시간</h3>
             <div className="h-64 w-full">
                 <ResponsiveContainer width="100%" height="100%">
                     <BarChart data={data}>

@@ -24,7 +24,7 @@ export default function PortfolioDetail({ item, onEdit, onDelete }: PortfolioDet
 
             <div>
                 <div className="flex items-center gap-2 mb-2">
-                    <span className="text-sm font-semibold px-2.5 py-0.5 rounded-full bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300 capitalize">
+                    <span className="text-sm font-semibold px-2.5 py-0.5 rounded-full bg-primary/20 text-primary dark:bg-blue-900/30 dark:text-blue-300 capitalize">
                         {item.type}
                     </span>
                     <span className="flex items-center text-sm text-slate-500 dark:text-slate-400">
@@ -32,7 +32,7 @@ export default function PortfolioDetail({ item, onEdit, onDelete }: PortfolioDet
                         {item.date}
                     </span>
                 </div>
-                <h2 className="text-2xl font-bold text-slate-900 dark:text-slate-100 mb-2">{item.title}</h2>
+                <h2 className="text-2xl font-bold text-neutral dark:text-slate-100 mb-2">{item.title}</h2>
                 <p className="text-lg text-slate-600 dark:text-slate-300">{item.description}</p>
             </div>
 
@@ -45,7 +45,7 @@ export default function PortfolioDetail({ item, onEdit, onDelete }: PortfolioDet
                         </a>
                     )}
                     {item.links.demo && (
-                        <a href={item.links.demo} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
+                        <a href={item.links.demo} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 px-4 py-2 bg-primary text-white rounded-lg hover:bg-teal-700 transition-colors">
                             <Globe className="w-4 h-4" /> Demo / Link
                         </a>
                     )}

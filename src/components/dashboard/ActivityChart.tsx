@@ -18,7 +18,7 @@ export default function ActivityChart() {
             transition={{ duration: 0.5, delay: 0.3 }}
             className="bg-white dark:bg-slate-900 p-6 rounded-xl shadow-sm border border-slate-100 dark:border-slate-800"
         >
-            <h3 className="text-lg font-bold mb-4 text-slate-900 dark:text-slate-100">활동 비율</h3>
+            <h3 className="text-lg font-bold mb-4 text-neutral dark:text-slate-100">활동 비율</h3>
             <div className="h-64 w-full">
                 <ResponsiveContainer width="100%" height="100%">
                     <PieChart>

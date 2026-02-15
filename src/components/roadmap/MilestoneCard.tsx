@@ -17,7 +17,7 @@ interface MilestoneCardProps {
 
 const statusColors = {
     'not-started': 'bg-slate-100 text-slate-600 dark:bg-slate-800 dark:text-slate-400',
-    'in-progress': 'bg-blue-100 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400',
+    'in-progress': 'bg-primary/10 text-primary dark:bg-blue-900/30 dark:text-blue-400',
     'completed': 'bg-green-100 text-green-600 dark:bg-green-900/30 dark:text-green-400',
 };
 
@@ -49,7 +49,7 @@ export default function MilestoneCard({ milestone, onEdit, onDelete, onToggleTas
             <div className={cn(
                 "absolute -left-[9px] top-0 w-4 h-4 rounded-full border-2 bg-white dark:bg-slate-900",
                 milestone.status === 'completed' ? "border-green-500 bg-green-500" :
-                    milestone.status === 'in-progress' ? "border-blue-500" : "border-slate-300 dark:border-slate-600"
+                    milestone.status === 'in-progress' ? "border-primary" : "border-slate-300 dark:border-slate-600"
             )} />
 
             <div className="bg-white dark:bg-slate-900 rounded-xl shadow-sm border border-slate-200 dark:border-slate-800 p-5 hover:shadow-md transition-shadow">
@@ -64,7 +64,7 @@ export default function MilestoneCard({ milestone, onEdit, onDelete, onToggleTas
                         </span>
                     </div>
                     <div className="flex gap-1">
-                        <button onClick={() => onEdit(milestone.id)} className="p-1.5 text-slate-400 hover:text-blue-500 transition-colors">
+                        <button onClick={() => onEdit(milestone.id)} className="p-1.5 text-slate-400 hover:text-primary transition-colors">
                             <Edit2 className="w-4 h-4" />
                         </button>
                         <button onClick={() => onDelete(milestone.id)} className="p-1.5 text-slate-400 hover:text-red-500 transition-colors">
@@ -73,16 +73,16 @@ export default function MilestoneCard({ milestone, onEdit, onDelete, onToggleTas
                     </div>
                 </div>
 
-                <h3 className="text-lg font-bold text-slate-900 dark:text-slate-100 mb-1">{milestone.title}</h3>
+                <h3 className="text-lg font-bold text-neutral dark:text-slate-100 mb-1">{milestone.title}</h3>
                 <p className="text-slate-500 dark:text-slate-400 text-sm mb-4 line-clamp-2">{milestone.description}</p>
 
                 <div className="mb-4">
                     <div className="flex justify-between text-xs mb-1">
                         <span className="text-slate-500">{period}</span>
-                        <span className="font-semibold text-blue-600 dark:text-blue-400">{milestone.progress}%</span>
+                        <span className="font-semibold text-primary dark:text-blue-400">{milestone.progress}%</span>
                     </div>
                     <div className="h-1.5 w-full bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden">
-                        <div className="h-full bg-blue-500 transition-all duration-500" style={{ width: `${milestone.progress}%` }}></div>
+                        <div className="h-full bg-primary transition-all duration-500" style={{ width: `${milestone.progress}%` }}></div>
                     </div>
                 </div>
 
@@ -110,7 +110,7 @@ export default function MilestoneCard({ milestone, onEdit, onDelete, onToggleTas
                                     <div className={cn(
                                         "w-5 h-5 rounded border-2 flex items-center justify-center transition-colors",
                                         task.completed
-                                            ? "bg-blue-500 border-blue-500 text-white"
+                                            ? "bg-primary border-primary text-white"
                                             : "border-slate-300 dark:border-slate-600 group-hover:border-blue-400"
                                     )}>
                                         {task.completed && <CheckCircle className="w-3.5 h-3.5" />}
@@ -124,7 +124,7 @@ export default function MilestoneCard({ milestone, onEdit, onDelete, onToggleTas
                                 </div>
                             ))}
                             <div className="pt-2">
-                                <button className="text-xs text-blue-500 font-medium hover:underline">+ 과제 추가하기</button>
+                                <button className="text-xs text-primary font-medium hover:underline">+ 과제 추가하기</button>
                             </div>
                         </motion.div>
                     )}

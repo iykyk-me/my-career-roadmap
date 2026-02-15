@@ -29,15 +29,15 @@ export default function CalendarHeatmap({ dailyGoals, onDateClick, selectedDate 
         const rate = total === 0 ? 0 : completed / total;
 
         if (rate === 0) return 'bg-slate-200 dark:bg-slate-700'; // Had goals but none done
-        if (rate <= 0.3) return 'bg-blue-200 dark:bg-blue-900/40';
-        if (rate <= 0.6) return 'bg-blue-400 dark:bg-blue-700';
-        if (rate <= 0.9) return 'bg-blue-600 dark:bg-blue-500';
-        return 'bg-blue-800 dark:bg-blue-400';
+        if (rate <= 0.3) return 'bg-primary/30 dark:bg-blue-900/40';
+        if (rate <= 0.6) return 'bg-primary/60 dark:bg-blue-700';
+        if (rate <= 0.9) return 'bg-primary dark:bg-blue-500';
+        return 'bg-teal-800 dark:bg-blue-400';
     };
 
     return (
         <div className="bg-white dark:bg-slate-900 rounded-xl shadow-sm border border-slate-200 dark:border-slate-800 p-6 mt-6">
-            <h3 className="text-lg font-bold mb-4 text-slate-900 dark:text-slate-100">활동 기록</h3>
+            <h3 className="text-lg font-bold mb-4 text-neutral dark:text-slate-100">활동 기록</h3>
             <div className="flex flex-wrap gap-1">
                 {days.map((day) => {
                     const dayStr = format(day, 'yyyy-MM-dd');
@@ -47,7 +47,7 @@ export default function CalendarHeatmap({ dailyGoals, onDateClick, selectedDate 
                             key={dayStr}
                             onClick={() => onDateClick(dayStr)}
                             title={`${dayStr}: ${dailyGoals.find(g => g.date === dayStr)?.goals.length || 0} goals`}
-                            className={`w-3 h-3 rounded-sm cursor-pointer transition-all ${getColor(day)} ${isSelected ? 'ring-2 ring-offset-1 ring-blue-500 dark:ring-offset-slate-900' : 'hover:scale-125'}`}
+                            className={`w-3 h-3 rounded-sm cursor-pointer transition-all ${getColor(day)} ${isSelected ? 'ring-2 ring-offset-1 ring-primary dark:ring-offset-slate-900' : 'hover:scale-125'}`}
                         />
                     );
                 })}
@@ -55,10 +55,10 @@ export default function CalendarHeatmap({ dailyGoals, onDateClick, selectedDate 
             <div className="flex items-center justify-end gap-2 mt-2 text-xs text-slate-500">
                 <span>Less</span>
                 <div className="w-3 h-3 bg-slate-100 dark:bg-slate-800 rounded-sm"></div>
-                <div className="w-3 h-3 bg-blue-200 dark:bg-blue-900/40 rounded-sm"></div>
-                <div className="w-3 h-3 bg-blue-400 dark:bg-blue-700 rounded-sm"></div>
-                <div className="w-3 h-3 bg-blue-600 dark:bg-blue-500 rounded-sm"></div>
-                <div className="w-3 h-3 bg-blue-800 dark:bg-blue-400 rounded-sm"></div>
+                <div className="w-3 h-3 bg-primary/30 dark:bg-blue-900/40 rounded-sm"></div>
+                <div className="w-3 h-3 bg-primary/60 dark:bg-blue-700 rounded-sm"></div>
+                <div className="w-3 h-3 bg-primary dark:bg-blue-500 rounded-sm"></div>
+                <div className="w-3 h-3 bg-teal-800 dark:bg-blue-400 rounded-sm"></div>
                 <span>More</span>
             </div>
         </div>

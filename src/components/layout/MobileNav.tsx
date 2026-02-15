@@ -29,7 +29,7 @@ export default function MobileNav() {
                             className={cn(
                                 "flex flex-col items-center justify-center w-full h-full space-y-1",
                                 isActive
-                                    ? "text-blue-600 dark:text-blue-400"
+                                    ? "text-primary dark:text-blue-400"
                                     : "text-slate-500 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800"
                             )}
                         >

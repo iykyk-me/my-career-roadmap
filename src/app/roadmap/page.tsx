@@ -137,7 +137,7 @@ export default function RoadmapPage() {
         <div className="max-w-4xl mx-auto pb-20">
             <div className="flex flex-col md:flex-row md:items-center justify-between mb-8 gap-4">
                 <div>
-                    <h2 className="text-2xl font-bold text-slate-900 dark:text-slate-100">커리어 로드맵</h2>
+                    <h2 className="text-2xl font-bold text-neutral dark:text-slate-100">커리어 로드맵</h2>
                     <p className="text-slate-500 dark:text-slate-400">꿈을 향한 여정을 단계별로 계획해보세요.</p>
                 </div>
                 <div className="flex gap-2">
@@ -150,7 +150,7 @@ export default function RoadmapPage() {
                     </button>
                     <button
                         onClick={openCreateModal}
-                        className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-medium shadow-sm shadow-blue-500/30"
+                        className="flex items-center gap-2 px-4 py-2 bg-primary text-white rounded-lg hover:bg-teal-700 transition-colors font-medium shadow-sm shadow-primary/30"
                     >
                         <Plus className="w-4 h-4" />
                         마일스톤 추가
@@ -162,8 +162,8 @@ export default function RoadmapPage() {
                 <button
                     onClick={() => setFilterCategory('all')}
                     className={`px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap transition-colors ${filterCategory === 'all'
-                            ? 'bg-slate-900 text-white dark:bg-white dark:text-slate-900'
-                            : 'bg-white text-slate-600 border border-slate-200 hover:bg-slate-50 dark:bg-slate-800 dark:border-slate-700 dark:text-slate-400'
+                        ? 'bg-neutral text-white dark:bg-white dark:text-slate-900'
+                        : 'bg-white text-slate-600 border border-slate-200 hover:bg-slate-50 dark:bg-slate-800 dark:border-slate-700 dark:text-slate-400'
                         }`}
                 >
                     전체 보기
@@ -174,8 +174,8 @@ export default function RoadmapPage() {
                         key={cat}
                         onClick={() => setFilterCategory(cat as Category)}
                         className={`px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap transition-colors ${filterCategory === cat
-                                ? 'bg-slate-900 text-white dark:bg-white dark:text-slate-900'
-                                : 'bg-white text-slate-600 border border-slate-200 hover:bg-slate-50 dark:bg-slate-800 dark:border-slate-700 dark:text-slate-400'
+                            ? 'bg-neutral text-white dark:bg-white dark:text-slate-900'
+                            : 'bg-white text-slate-600 border border-slate-200 hover:bg-slate-50 dark:bg-slate-800 dark:border-slate-700 dark:text-slate-400'
                             }`}
                     >
                         {cat === 'study' ? '학습' : cat === 'certificate' ? '자격증' : cat === 'project' ? '프로젝트' : '대외활동'}

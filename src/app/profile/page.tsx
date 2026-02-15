@@ -112,7 +112,7 @@ export default function ProfilePage() {
     return (
         <div className="max-w-4xl mx-auto pb-20">
             <div className="mb-8">
-                <h2 className="text-2xl font-bold text-slate-900 dark:text-slate-100">프로필</h2>
+                <h2 className="text-2xl font-bold text-neutral dark:text-slate-100">프로필</h2>
                 <p className="text-slate-500 dark:text-slate-400">나의 정보를 관리하고 데이터를 백업하세요.</p>
             </div>
 
@@ -130,12 +130,12 @@ export default function ProfilePage() {
                                 <User className="w-16 h-16" />
                             </div>
                         </div>
-                        <h3 className="text-xl font-bold text-slate-900 dark:text-slate-100">{profile.name}</h3>
+                        <h3 className="text-xl font-bold text-neutral dark:text-slate-100">{profile.name}</h3>
                         <p className="text-slate-500 dark:text-slate-400 text-sm mb-4">{profile.targetJob}</p>
 
                         <div className="w-full space-y-2 text-left text-sm">
                             <div className="flex items-center gap-2 text-slate-600 dark:text-slate-300 p-2 bg-slate-50 dark:bg-slate-800 rounded-lg">
-                                <School className="w-4 h-4 text-blue-500" />
+                                <School className="w-4 h-4 text-primary" />
                                 <span>{profile.school}</span>
                             </div>
                             <div className="flex items-center gap-2 text-slate-600 dark:text-slate-300 p-2 bg-slate-50 dark:bg-slate-800 rounded-lg">
@@ -151,26 +151,26 @@ export default function ProfilePage() {
                         transition={{ delay: 0.1 }}
                         className="bg-white dark:bg-slate-900 rounded-xl shadow-sm border border-slate-200 dark:border-slate-800 p-6"
                     >
-                        <h4 className="font-bold mb-4 text-slate-900 dark:text-slate-100 flex items-center gap-2">
-                            <Award className="w-5 h-5 text-yellow-500" />
+                        <h4 className="font-bold mb-4 text-neutral dark:text-slate-100 flex items-center gap-2">
+                            <Award className="w-5 h-5 text-point" />
                             활동 요약
                         </h4>
                         <div className="space-y-3 text-sm">
                             <div className="flex justify-between">
                                 <span className="text-slate-500">완료한 마일스톤</span>
-                                <span className="font-bold text-slate-900 dark:text-slate-100">
+                                <span className="font-bold text-neutral dark:text-slate-100">
                                     {milestones.filter(m => m.status === 'completed').length}개
                                 </span>
                             </div>
                             <div className="flex justify-between">
                                 <span className="text-slate-500">포트폴리오 항목</span>
-                                <span className="font-bold text-slate-900 dark:text-slate-100">
+                                <span className="font-bold text-neutral dark:text-slate-100">
                                     {portfolio.length}개
                                 </span>
                             </div>
                             <div className="flex justify-between">
                                 <span className="text-slate-500">총 공부 시간</span>
-                                <span className="font-bold text-slate-900 dark:text-slate-100">
+                                <span className="font-bold text-neutral dark:text-slate-100">
                                     {dailyGoals.reduce((acc, curr) => acc + (curr.studyHours || 0), 0)}시간
                                 </span>
                             </div>
@@ -186,11 +186,11 @@ export default function ProfilePage() {
                         className="bg-white dark:bg-slate-900 rounded-xl shadow-sm border border-slate-200 dark:border-slate-800 p-6"
                     >
                         <div className="flex justify-between items-center mb-6">
-                            <h3 className="text-lg font-bold text-slate-900 dark:text-slate-100">기본 정보 수정</h3>
+                            <h3 className="text-lg font-bold text-neutral dark:text-slate-100">기본 정보 수정</h3>
                             {!isEditing ? (
                                 <button
                                     onClick={handleEditToggle}
-                                    className="text-blue-600 hover:text-blue-700 font-medium text-sm"
+                                    className="text-primary hover:text-teal-700 font-medium text-sm"
                                 >
                                     수정하기
                                 </button>
@@ -204,7 +204,7 @@ export default function ProfilePage() {
                                     </button>
                                     <button
                                         onClick={handleSave}
-                                        className="px-3 py-1 bg-blue-600 text-white rounded hover:bg-blue-700 text-sm flex items-center gap-1"
+                                        className="px-3 py-1 bg-primary text-white rounded hover:bg-teal-700 text-sm flex items-center gap-1"
                                     >
                                         <Save className="w-3 h-3" /> 저장
                                     </button>
@@ -303,7 +303,7 @@ export default function ProfilePage() {
                                                 placeholder="스킬 추가..."
                                                 className="w-full bg-transparent text-sm focus:outline-none"
                                             />
-                                            <button onClick={addSkill} className="text-blue-500 hover:text-blue-600">
+                                            <button onClick={addSkill} className="text-primary hover:text-teal-600">
                                                 <Plus className="w-4 h-4" />
                                             </button>
                                         </div>
@@ -319,7 +319,7 @@ export default function ProfilePage() {
                         transition={{ delay: 0.2 }}
                         className="mt-6 bg-white dark:bg-slate-900 rounded-xl shadow-sm border border-slate-200 dark:border-slate-800 p-6"
                     >
-                        <h3 className="text-lg font-bold mb-4 text-slate-900 dark:text-slate-100">데이터 관리</h3>
+                        <h3 className="text-lg font-bold mb-4 text-neutral dark:text-slate-100">데이터 관리</h3>
                         <div className="flex flex-wrap gap-4">
                             <button
                                 onClick={handleExport}

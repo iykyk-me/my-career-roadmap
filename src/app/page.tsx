@@ -30,7 +30,7 @@ export default function Dashboard() {
           animate={{ opacity: 1, x: 0 }}
           className="space-y-1"
         >
-          <h2 className="text-2xl font-bold text-slate-900 dark:text-slate-100">
+          <h2 className="text-2xl font-bold text-neutral dark:text-slate-100">
             반가워요, {profile.name}님! 👋
           </h2>
           <p className="text-slate-500 dark:text-slate-400">
@@ -42,7 +42,7 @@ export default function Dashboard() {
         <motion.div
           initial={{ opacity: 0, x: 20 }}
           animate={{ opacity: 1, x: 0 }}
-          className="flex items-center gap-4 bg-blue-600 text-white px-6 py-3 rounded-xl shadow-lg shadow-blue-500/20"
+          className="flex items-center gap-4 bg-primary text-white px-6 py-3 rounded-xl shadow-lg shadow-primary/20"
         >
           <div className="text-center">
             <span className="text-xs opacity-80 block">졸업까지</span>
@@ -62,7 +62,7 @@ export default function Dashboard() {
           title="연속 달성"
           value={`${stats.currentStreak}일째`}
           icon={Flame}
-          colorClass="bg-orange-500 text-orange-500"
+          colorClass="bg-point text-point"
           subtext="이대로 쭉 가보자고! 🔥"
           delay={0.1}
         />
@@ -70,7 +70,7 @@ export default function Dashboard() {
           title="이번 달 목표 달성"
           value={`${stats.totalGoalsCompleted}개`}
           icon={CheckCircle}
-          colorClass="bg-green-500 text-green-500"
+          colorClass="bg-primary text-primary"
           subtext="지난달보다 12% 증가 📈"
           delay={0.2}
         />
@@ -78,7 +78,7 @@ export default function Dashboard() {
           title="총 공부 시간"
           value={`${stats.totalStudyHours}시간`}
           icon={Clock}
-          colorClass="bg-blue-500 text-blue-500"
+          colorClass="bg-sub text-sub"
           subtext="꾸준함이 재능을 이긴다 ⏳"
           delay={0.3}
         />
@@ -86,7 +86,7 @@ export default function Dashboard() {
           title="취득 자격증"
           value={`${stats.completedMilestones}개`}
           icon={Award}
-          colorClass="bg-purple-500 text-purple-500"
+          colorClass="bg-sub text-sub"
           subtext="나의 경쟁력 +1 ✨"
           delay={0.4}
         />
@@ -114,28 +114,28 @@ export default function Dashboard() {
           className="bg-white dark:bg-slate-900 p-6 rounded-xl shadow-sm border border-slate-100 dark:border-slate-800"
         >
           <div className="flex items-center justify-between mb-4">
-            <h3 className="text-lg font-bold text-slate-900 dark:text-slate-100">진행 중인 마일스톤</h3>
-            <Link href="/roadmap" className="text-sm text-blue-600 hover:underline">전체보기</Link>
+            <h3 className="text-lg font-bold text-neutral dark:text-slate-100">진행 중인 마일스톤</h3>
+            <Link href="/roadmap" className="text-sm text-primary hover:underline">전체보기</Link>
           </div>
           <div className="space-y-4">
             {activeMilestones.length > 0 ? (
               activeMilestones.map(milestone => (
                 <div key={milestone.id} className="p-4 rounded-lg bg-slate-50 dark:bg-slate-800/50 border border-slate-100 dark:border-slate-800">
                   <div className="flex justify-between items-start mb-2">
-                    <span className="text-xs font-semibold px-2 py-1 rounded bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300">
+                    <span className="text-xs font-semibold px-2 py-1 rounded bg-primary/10 text-primary dark:bg-blue-900/30 dark:text-blue-300">
                       {milestone.category}
                     </span>
                     <span className="text-xs text-slate-500">{milestone.endDate}까지</span>
                   </div>
-                  <h4 className="font-medium text-slate-900 dark:text-slate-100">{milestone.title}</h4>
+                  <h4 className="font-medium text-neutral dark:text-slate-100">{milestone.title}</h4>
                   <div className="mt-3">
                     <div className="flex justify-between text-xs mb-1">
                       <span className="text-slate-500">진행률</span>
-                      <span className="text-blue-600 font-medium">{milestone.progress}%</span>
+                      <span className="text-primary font-medium">{milestone.progress}%</span>
                     </div>
                     <div className="h-1.5 w-full bg-slate-200 dark:bg-slate-700 rounded-full overflow-hidden">
                       <div
-                        className="h-full bg-blue-500 rounded-full"
+                        className="h-full bg-primary rounded-full"
                         style={{ width: `${milestone.progress}%` }}
                       ></div>
                     </div>
@@ -155,14 +155,14 @@ export default function Dashboard() {
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.5, delay: 0.6 }}
-          className="bg-gradient-to-br from-blue-500 to-blue-600 p-6 rounded-xl shadow-lg ring-1 ring-black/5 text-white"
+          className="bg-gradient-to-br from-primary to-teal-600 p-6 rounded-xl shadow-lg ring-1 ring-black/5 text-white"
         >
           <h3 className="text-lg font-bold mb-4">오늘의 목표 🎯</h3>
           <div className="space-y-3">
             {todayGoals.length > 0 ? (
               todayGoals.slice(0, 4).map(goal => (
                 <div key={goal.id} className="flex items-center gap-3 bg-white/10 p-3 rounded-lg backdrop-blur-sm">
-                  <div className={`w-5 h-5 rounded-full border-2 border-white/40 flex items-center justify-center ${goal.completed ? 'bg-white text-blue-500' : ''}`}>
+                  <div className={`w-5 h-5 rounded-full border-2 border-white/40 flex items-center justify-center ${goal.completed ? 'bg-white text-primary' : ''}`}>
                     {goal.completed && <CheckCircle className="w-3 h-3" />}
                   </div>
                   <span className={`text-sm ${goal.completed ? 'line-through opacity-60' : ''}`}>{goal.text}</span>
@@ -171,7 +171,7 @@ export default function Dashboard() {
             ) : (
               <div className="text-center py-8 bg-white/10 rounded-lg">
                 <p className="opacity-90 mb-2">오늘의 목표가 아직 없어요!</p>
-                <Link href="/daily" className="inline-block px-4 py-2 bg-white text-blue-600 rounded-lg text-sm font-bold shadow-sm hover:bg-blue-50 transition-colors">
+                <Link href="/daily" className="inline-block px-4 py-2 bg-white text-primary rounded-lg text-sm font-bold shadow-sm hover:bg-slate-50 transition-colors">
                   목표 세우기
                 </Link>
               </div>

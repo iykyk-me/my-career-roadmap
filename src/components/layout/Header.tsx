@@ -38,7 +38,7 @@ export default function Header() {
             </div>
 
             <div className="flex items-center gap-4">
-                <div className="hidden md:flex items-center gap-2 px-3 py-1.5 bg-orange-50 text-orange-600 rounded-full dark:bg-orange-900/20 dark:text-orange-400">
+                <div className="hidden md:flex items-center gap-2 px-3 py-1.5 bg-point/10 text-point rounded-full dark:bg-orange-900/20 dark:text-orange-400">
                     <Flame className="w-4 h-4" />
                     <span className="text-xs font-bold">3일 연속 달성!</span>
                 </div>

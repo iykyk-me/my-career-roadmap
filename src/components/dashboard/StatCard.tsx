@@ -23,7 +23,7 @@ export default function StatCard({ title, value, icon: Icon, subtext, colorClass
             <div className="flex items-center justify-between">
                 <div>
                     <p className="text-sm font-medium text-slate-500 dark:text-slate-400">{title}</p>
-                    <h3 className="text-2xl font-bold mt-1 text-slate-900 dark:text-slate-100">{value}</h3>
+                    <h3 className="text-2xl font-bold mt-1 text-neutral dark:text-slate-100">{value}</h3>
                     {subtext && <p className="text-xs text-slate-400 mt-1">{subtext}</p>}
                 </div>
                 <div className={`p-3 rounded-lg ${colorClass} bg-opacity-10`}>
