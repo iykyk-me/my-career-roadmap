@@ -13,6 +13,7 @@ const STORAGE_PREFIX = "career-roadmap-";
 
 // Sample Data
 const initialProfile: UserProfile = {
+    role: "student",
     name: "김학생",
     school: "코딩특성화고등학교",
     department: "소프트웨어과",
